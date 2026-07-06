@@ -184,7 +184,43 @@ export const partners: Partner[] = [
   { id: "par-004", name: "[Sponsor Name Pending]", tier: "Sponsor", logo: "[LOGO]", link: "#" }
 ];
 
-/* ---------- Shared lookup helpers ---------- */
+/* ---------- National map: region metadata ---------- */
+export interface RegionInfo {
+  name: string;
+  nameAr: string;
+  cities: string[];
+  capital: string;
+  status: "Active" | "Onboarding" | "Not Yet Deployed";
+}
+
+export const regions: RegionInfo[] = [
+  { name: "Riyadh", nameAr: "الرياض", cities: ["Riyadh"], capital: "Riyadh", status: "Active" },
+  { name: "Makkah", nameAr: "مكة المكرمة", cities: ["Jeddah", "Makkah"], capital: "Jeddah", status: "Active" },
+  { name: "Eastern Region", nameAr: "المنطقة الشرقية", cities: ["Dammam"], capital: "Dammam", status: "Active" },
+  { name: "Tabuk", nameAr: "تبوك", cities: ["NEOM"], capital: "Tabuk", status: "Onboarding" },
+  { name: "Madinah", nameAr: "المدينة المنورة", cities: [], capital: "Madinah", status: "Not Yet Deployed" },
+  { name: "Qassim", nameAr: "القصيم", cities: [], capital: "Buraidah", status: "Not Yet Deployed" },
+  { name: "Asir", nameAr: "عسير", cities: [], capital: "Abha", status: "Not Yet Deployed" },
+  { name: "Hail", nameAr: "حائل", cities: [], capital: "Hail", status: "Not Yet Deployed" },
+  { name: "Jizan", nameAr: "جازان", cities: [], capital: "Jizan", status: "Not Yet Deployed" },
+  { name: "Najran", nameAr: "نجران", cities: [], capital: "Najran", status: "Not Yet Deployed" },
+  { name: "Bahah", nameAr: "الباحة", cities: [], capital: "Al Bahah", status: "Not Yet Deployed" },
+  { name: "Jawf", nameAr: "الجوف", cities: [], capital: "Sakakah", status: "Not Yet Deployed" },
+  { name: "Northern Region", nameAr: "الحدود الشمالية", cities: [], capital: "Arar", status: "Not Yet Deployed" },
+];
+
+export const institutionsInRegion = (regionName: string) => {
+  const region = regions.find((r) => r.name === regionName);
+  if (!region) return [];
+  return institutions.filter((i) => region.cities.includes(i.city));
+};
+
+export const playersInRegion = (regionName: string) => {
+  const insts = institutionsInRegion(regionName).map((i) => i.id);
+  return players.filter((p) => insts.includes(p.institutionId));
+};
+
+
 export const getInstitution = (id?: string | null) => institutions.find(i => i.id === id) ?? null;
 export const getPlayer = (id?: string | null) => players.find(p => p.id === id) ?? null;
 export const getTournament = (id?: string | null) => tournaments.find(t => t.id === id) ?? null;
