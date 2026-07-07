@@ -221,6 +221,50 @@ export const playersInRegion = (regionName: string) => {
 };
 
 
+/* ---------- Saudi Legends: national phygital team ---------- */
+export interface NationalTeamPlayer {
+  id: string;
+  name: string;
+  role: string;
+  photo: string;
+  bio: string;
+}
+
+export interface NationalCompetition {
+  name: string;
+  location: string;
+  dateStart: string;
+  dateEnd: string;
+  status: "Qualified" | "Competing" | "Completed";
+  description: string;
+}
+
+export const saudiLegendsRoster: NationalTeamPlayer[] = [
+  { id: "nt-001", name: "Faris Al-Qahtani", role: "Captain · Phygital Football", photo: "FQ",
+    bio: "Squad captain leading the digital-segment lineup, drawn from the national deployment framework's top performers." },
+  { id: "nt-002", name: "Turki Al-Anazi", role: "Physical Segment Lead", photo: "TA",
+    bio: "Anchors the physical 5-a-side segment, selected through the SEF Arena qualification pathway." },
+  { id: "nt-003", name: "Yazan Al-Harbi", role: "Digital Segment Specialist", photo: "YH",
+    bio: "Top-ranked digital segment performer from the national universities circuit." },
+  { id: "nt-004", name: "Bandar Al-Otaibi", role: "Utility / Substitute", photo: "BO",
+    bio: "Cross-trained across both segments, called up from the corporate league track." },
+  { id: "nt-005", name: "Majed Al-Shammari", role: "Physical Segment", photo: "MS",
+    bio: "Physical segment starter with a background in traditional football academies." },
+  { id: "nt-006", name: "Rakan Al-Dosari", role: "Digital Segment", photo: "RD",
+    bio: "Digital segment starter, part of the inaugural national team call-up class." },
+];
+
+export const gamesOfTheFuture2026: NationalCompetition = {
+  name: "Games of the Future 2026",
+  location: "Astana, Kazakhstan",
+  dateStart: "2026-07-28",
+  dateEnd: "2026-08-05",
+  status: "Qualified",
+  description:
+    "Saudi Legends has qualified to represent the Kingdom in phygital football at the Games of the Future 2026, the flagship international phygital multi-sport event. [PLACEHOLDER — official squad announcement and match schedule pending federation confirmation].",
+};
+
+/* ---------- Shared lookup helpers ---------- */
 export const getInstitution = (id?: string | null) => institutions.find(i => i.id === id) ?? null;
 export const getPlayer = (id?: string | null) => players.find(p => p.id === id) ?? null;
 export const getTournament = (id?: string | null) => tournaments.find(t => t.id === id) ?? null;
