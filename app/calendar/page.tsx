@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { tournaments, statusBadgeClass, fmtDate } from "@/lib/data";
+import { tournaments, statusBadgeClass, fmtDate, getTournamentHero } from "@/lib/data";
+import CardImage from "@/components/CardImage";
 
 export default function CalendarPage() {
   const [sector, setSector] = useState("");
@@ -73,12 +74,15 @@ export default function CalendarPage() {
 
           <div className="grid grid-3">
             {list.length ? (
-              list.map((t) => (
-                <Link key={t.id} href={`/tournaments/${t.id}`} className="card">
-                  <span className={`badge ${statusBadgeClass(t.status)}`}>{t.status}</span>
-                  <h3>{t.name}</h3>
-                  <p className="meta">{t.discipline} · {t.sector}</p>
-                  <p className="desc">{fmtDate(t.dateStart)} – {fmtDate(t.dateEnd)} · {t.venue}</p>
+              list.map((t, i) => (
+                <Link key={t.id} href={`/tournaments/${t.id}`} className="card" style={{ padding: 0, overflow: "hidden" }}>
+                  <CardImage src={getTournamentHero(t, i)} alt={t.name} fallbackText={t.discipline} />
+                  <div style={{ padding: 22, display: "flex", flexDirection: "column", gap: 10 }}>
+                    <span className={`badge ${statusBadgeClass(t.status)}`}>{t.status}</span>
+                    <h3>{t.name}</h3>
+                    <p className="meta">{t.discipline} · {t.sector}</p>
+                    <p className="desc">{fmtDate(t.dateStart)} – {fmtDate(t.dateEnd)} · {t.venue}</p>
+                  </div>
                 </Link>
               ))
             ) : (

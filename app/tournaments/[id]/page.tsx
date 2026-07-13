@@ -7,6 +7,7 @@ import {
   statusBadgeClass,
   fmtDate,
   tournaments,
+  getTournamentHero,
 } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -26,7 +27,10 @@ export default async function TournamentPage({
 
   return (
     <>
-      <section className="profile-head">
+      <section
+        className="profile-head profile-head-photo"
+        style={{ ["--hero-image" as string]: `url(${getTournamentHero(t, tournaments.indexOf(t))})` }}
+      >
         <div className="container">
           <span className={`badge ${statusBadgeClass(t.status)}`}>{t.status}</span>
           <h1 style={{ marginTop: 8, fontSize: "clamp(1.8rem,4.5vw,3rem)" }}>{t.name}</h1>

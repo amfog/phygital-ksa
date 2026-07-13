@@ -43,6 +43,9 @@ export interface Tournament {
   winnerId: string | null;
   winnerType: WinnerType | null;
   description: string;
+  /** Optional real cover image path (public/images/...). Falls back to a generic
+   *  siteImagery background when absent — see getTournamentHero(). */
+  heroImage?: string;
 }
 
 export interface Result {
@@ -73,6 +76,9 @@ export interface NewsItem {
   cover: string;
   tournamentId: string | null;
   body: string;
+  /** Optional real cover image path. Falls back to a generic siteImagery
+   *  background when absent — see getNewsCover(). */
+  coverImage?: string;
 }
 
 export interface Partner {
@@ -82,6 +88,44 @@ export interface Partner {
   logo: string;
   link: string;
 }
+
+/* ===========================================================
+   SITE IMAGERY — generic, non-record-specific decorative assets.
+   These are AI-generated atmosphere/stock-style images (arena shots,
+   abstract graphics), NOT real photos of any specific institution or
+   player. Do not attach these to a specific institution/player record
+   as if they were that record's real photo — use them only for
+   site-wide decorative purposes (heroes, section backgrounds, generic
+   fallback cover art) until real photography replaces them.
+   Path convention: /public/images/<file>, referenced here without
+   the leading /public since Next.js serves that dir at the root.
+=========================================================== */
+export const siteImagery = {
+  heroBackground: "/images/arena-stage-1.png",
+  heroBackgroundAlt: "/images/arena-stage-2.png",
+  abstract: [
+    "/images/abstract-controller.png",
+    "/images/abstract-crossbeams.png",
+    "/images/abstract-burst.png",
+    "/images/abstract-glow-1.png",
+    "/images/abstract-glow-2.png",
+    "/images/abstract-orb.png",
+    "/images/abstract-rings.png",
+  ],
+  patterns: ["/images/pattern-diagonal.png", "/images/pattern-dark.png"],
+  teamLineup: "/images/team-lineup.png",
+  gamingSetup: "/images/gaming-setup.png",
+  venueInterior: "/images/venue-interior.png",
+  /** Generic fallback cover art, cycled by index so cards don't all look identical. */
+  genericCovers: [
+    "/images/arena-stage-1.png",
+    "/images/arena-stage-2.png",
+    "/images/gaming-setup.png",
+    "/images/venue-interior.png",
+    "/images/abstract-glow-1.png",
+    "/images/abstract-glow-2.png",
+  ],
+};
 
 export const institutions: Institution[] = [
   { id: "inst-001", name: "King Saud University", sector: "University", city: "Riyadh", status: "Active",
@@ -129,19 +173,23 @@ export const tournaments: Tournament[] = [
   { id: "trn-001", name: "SEF Arena Phygital Open", discipline: "Phygital Football", sector: "Corporate",
     dateStart: "2026-08-14", dateEnd: "2026-08-16", venue: "SEF Arena, Jeddah", status: "Upcoming",
     institutionIds: ["inst-002", "inst-004"], winnerId: null, winnerType: null,
-    description: "The flagship hosting partnership between Phygital KSA and Al-Ittihad Al-Saudi." },
+    description: "The flagship hosting partnership between Phygital KSA and Al-Ittihad Al-Saudi.",
+    heroImage: "/images/arena-stage-1.png" },
   { id: "trn-002", name: "National Universities Cup", discipline: "Phygital Basketball", sector: "University",
     dateStart: "2026-07-20", dateEnd: "2026-07-22", venue: "KSU Sports Complex, Riyadh", status: "Ongoing",
     institutionIds: ["inst-001", "inst-006"], winnerId: null, winnerType: null,
-    description: "Inter-university phygital basketball championship under the national framework." },
+    description: "Inter-university phygital basketball championship under the national framework.",
+    heroImage: "/images/arena-stage-2.png" },
   { id: "trn-003", name: "Schools Spring Circuit — Finals", discipline: "Phygital Racing", sector: "School",
     dateStart: "2026-05-02", dateEnd: "2026-05-03", venue: "Riyadh Youth Hall", status: "Completed",
     institutionIds: ["inst-003", "inst-005"], winnerId: "plr-002", winnerType: "player",
-    description: "Season-closing finals for the schools phygital racing track." },
+    description: "Season-closing finals for the schools phygital racing track.",
+    heroImage: "/images/venue-interior.png" },
   { id: "trn-004", name: "Corporate League Kickoff", discipline: "Phygital Football", sector: "Corporate",
     dateStart: "2026-04-10", dateEnd: "2026-04-10", venue: "Al-Ittihad Academy, Jeddah", status: "Completed",
     institutionIds: ["inst-002"], winnerId: "plr-003", winnerType: "player",
-    description: "First sanctioned corporate-track event ahead of the SEF Arena partnership." }
+    description: "First sanctioned corporate-track event ahead of the SEF Arena partnership.",
+    heroImage: "/images/gaming-setup.png" }
 ];
 
 export const results: Result[] = [
@@ -165,16 +213,20 @@ export const rules: Rule[] = [
 export const news: NewsItem[] = [
   { id: "news-001", title: "Phygital KSA Launches as the Kingdom's National Phygital Platform", tag: "Announcement",
     date: "2026-06-18", cover: "N1", tournamentId: null,
-    body: "Phygital KSA has been confirmed as the national operator for phygital competition in Saudi Arabia, overseeing both the SEF Arena hosting partnership with Al-Ittihad Al-Saudi and the national schools, universities, and corporate deployment framework. [PLACEHOLDER — full announcement copy pending federation sign-off]." },
+    body: "Phygital KSA has been confirmed as the national operator for phygital competition in Saudi Arabia, overseeing both the SEF Arena hosting partnership with Al-Ittihad Al-Saudi and the national schools, universities, and corporate deployment framework. [PLACEHOLDER — full announcement copy pending federation sign-off].",
+    coverImage: "/images/abstract-glow-1.png" },
   { id: "news-002", title: "SEF Arena Partnership With Al-Ittihad Al-Saudi Confirmed", tag: "Partnership",
     date: "2026-06-10", cover: "N2", tournamentId: "trn-001",
-    body: "Phygital KSA and Al-Ittihad Al-Saudi have finalized the hosting agreement for the SEF Arena Phygital Open, scheduled for August 2026 in Jeddah. [PLACEHOLDER — quote from club leadership]." },
+    body: "Phygital KSA and Al-Ittihad Al-Saudi have finalized the hosting agreement for the SEF Arena Phygital Open, scheduled for August 2026 in Jeddah. [PLACEHOLDER — quote from club leadership].",
+    coverImage: "/images/arena-stage-1.png" },
   { id: "news-003", title: "Schools Spring Circuit Wraps With Racing Finals in Riyadh", tag: "Result",
     date: "2026-05-04", cover: "N3", tournamentId: "trn-003",
-    body: "Fatimah Al-Shehri of Riyadh Schools Cluster 4 claimed the Spring Circuit racing title in a final-lap tiebreak. [PLACEHOLDER — recap and standings]." },
+    body: "Fatimah Al-Shehri of Riyadh Schools Cluster 4 claimed the Spring Circuit racing title in a final-lap tiebreak. [PLACEHOLDER — recap and standings].",
+    coverImage: "/images/venue-interior.png" },
   { id: "news-004", title: "Creator Series: Inside the Phygital Format", tag: "Creator Content",
     date: "2026-04-28", cover: "N4", tournamentId: null,
-    body: "A new creator content series explains how phygital competition blends digital and physical play for new audiences. [PLACEHOLDER — video embed / creator credits]." }
+    body: "A new creator content series explains how phygital competition blends digital and physical play for new audiences. [PLACEHOLDER — video embed / creator credits].",
+    coverImage: "/images/gaming-setup.png" }
 ];
 
 export const partners: Partner[] = [
@@ -183,6 +235,85 @@ export const partners: Partner[] = [
   { id: "par-003", name: "Games of the Future", tier: "International Body", logo: "[LOGO]", link: "#" },
   { id: "par-004", name: "[Sponsor Name Pending]", tier: "Sponsor", logo: "[LOGO]", link: "#" }
 ];
+
+/* ---------- National map: region metadata ---------- */
+export interface RegionInfo {
+  name: string;
+  nameAr: string;
+  cities: string[];
+  capital: string;
+  status: "Active" | "Onboarding" | "Not Yet Deployed";
+}
+
+export const regions: RegionInfo[] = [
+  { name: "Riyadh", nameAr: "الرياض", cities: ["Riyadh"], capital: "Riyadh", status: "Active" },
+  { name: "Makkah", nameAr: "مكة المكرمة", cities: ["Jeddah", "Makkah"], capital: "Jeddah", status: "Active" },
+  { name: "Eastern Region", nameAr: "المنطقة الشرقية", cities: ["Dammam"], capital: "Dammam", status: "Active" },
+  { name: "Tabuk", nameAr: "تبوك", cities: ["NEOM"], capital: "Tabuk", status: "Onboarding" },
+  { name: "Madinah", nameAr: "المدينة المنورة", cities: [], capital: "Madinah", status: "Not Yet Deployed" },
+  { name: "Qassim", nameAr: "القصيم", cities: [], capital: "Buraidah", status: "Not Yet Deployed" },
+  { name: "Asir", nameAr: "عسير", cities: [], capital: "Abha", status: "Not Yet Deployed" },
+  { name: "Hail", nameAr: "حائل", cities: [], capital: "Hail", status: "Not Yet Deployed" },
+  { name: "Jizan", nameAr: "جازان", cities: [], capital: "Jizan", status: "Not Yet Deployed" },
+  { name: "Najran", nameAr: "نجران", cities: [], capital: "Najran", status: "Not Yet Deployed" },
+  { name: "Bahah", nameAr: "الباحة", cities: [], capital: "Al Bahah", status: "Not Yet Deployed" },
+  { name: "Jawf", nameAr: "الجوف", cities: [], capital: "Sakakah", status: "Not Yet Deployed" },
+  { name: "Northern Region", nameAr: "الحدود الشمالية", cities: [], capital: "Arar", status: "Not Yet Deployed" },
+];
+
+export const institutionsInRegion = (regionName: string) => {
+  const region = regions.find((r) => r.name === regionName);
+  if (!region) return [];
+  return institutions.filter((i) => region.cities.includes(i.city));
+};
+
+export const playersInRegion = (regionName: string) => {
+  const insts = institutionsInRegion(regionName).map((i) => i.id);
+  return players.filter((p) => insts.includes(p.institutionId));
+};
+
+/* ---------- Saudi Legends: national phygital team ---------- */
+export interface NationalTeamPlayer {
+  id: string;
+  name: string;
+  role: string;
+  photo: string;
+  bio: string;
+}
+
+export interface NationalCompetition {
+  name: string;
+  location: string;
+  dateStart: string;
+  dateEnd: string;
+  status: "Qualified" | "Competing" | "Completed";
+  description: string;
+}
+
+export const saudiLegendsRoster: NationalTeamPlayer[] = [
+  { id: "nt-001", name: "Faris Al-Qahtani", role: "Captain · Phygital Football", photo: "FQ",
+    bio: "Squad captain leading the digital-segment lineup, drawn from the national deployment framework's top performers." },
+  { id: "nt-002", name: "Turki Al-Anazi", role: "Physical Segment Lead", photo: "TA",
+    bio: "Anchors the physical 5-a-side segment, selected through the SEF Arena qualification pathway." },
+  { id: "nt-003", name: "Yazan Al-Harbi", role: "Digital Segment Specialist", photo: "YH",
+    bio: "Top-ranked digital segment performer from the national universities circuit." },
+  { id: "nt-004", name: "Bandar Al-Otaibi", role: "Utility / Substitute", photo: "BO",
+    bio: "Cross-trained across both segments, called up from the corporate league track." },
+  { id: "nt-005", name: "Majed Al-Shammari", role: "Physical Segment", photo: "MS",
+    bio: "Physical segment starter with a background in traditional football academies." },
+  { id: "nt-006", name: "Rakan Al-Dosari", role: "Digital Segment", photo: "RD",
+    bio: "Digital segment starter, part of the inaugural national team call-up class." },
+];
+
+export const gamesOfTheFuture2026: NationalCompetition = {
+  name: "Games of the Future 2026",
+  location: "Astana, Kazakhstan",
+  dateStart: "2026-07-28",
+  dateEnd: "2026-08-05",
+  status: "Qualified",
+  description:
+    "Saudi Legends has qualified to represent the Kingdom in phygital football at the Games of the Future 2026, the flagship international phygital multi-sport event. [PLACEHOLDER — official squad announcement and match schedule pending federation confirmation].",
+};
 
 /* ---------- Shared lookup helpers ---------- */
 export const getInstitution = (id?: string | null) => institutions.find(i => i.id === id) ?? null;
@@ -207,3 +338,12 @@ export const statusBadgeClass = (status: TournamentStatus): string => {
   if (status === "Ongoing") return "badge-ongoing";
   return "badge-completed";
 };
+
+/** Returns a tournament's real hero image if set, otherwise cycles through
+ *  genericCovers by index so fallbacks aren't all identical. */
+export const getTournamentHero = (t: Tournament, index = 0): string =>
+  t.heroImage ?? siteImagery.genericCovers[index % siteImagery.genericCovers.length];
+
+/** Same pattern for news cover art. */
+export const getNewsCover = (n: NewsItem, index = 0): string =>
+  n.coverImage ?? siteImagery.genericCovers[index % siteImagery.genericCovers.length];
