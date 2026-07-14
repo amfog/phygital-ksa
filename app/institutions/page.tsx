@@ -75,7 +75,10 @@ export default function InstitutionsHubPage() {
 
   return (
     <>
-      <section className="section section--black" style={{ paddingTop: 56, paddingBottom: 40 }}>
+      <section
+        className="section section--black section--black-photo"
+        style={{ paddingTop: 56, paddingBottom: 40, ["--hero-image" as string]: "url(/images/abstract-burst.png)" }}
+      >
         <div className="container">
           <span className="section-tag">Institutions Hub</span>
           <h1 style={{ fontSize: "clamp(2rem,5vw,3.2rem)" }}>

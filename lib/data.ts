@@ -202,30 +202,30 @@ export const results: Result[] = [
 ];
 
 export const rules: Rule[] = [
-  { id: "rul-001", discipline: "Phygital Football", summary: "[PLACEHOLDER] Hybrid format combining a digital match segment with a physical 5-a-side segment; aggregate score determines the winner.",
-    eligibility: "[PLACEHOLDER] Open to registered institution rosters, ages 15+.", rulebookLink: null },
-  { id: "rul-002", discipline: "Phygital Racing", summary: "[PLACEHOLDER] Sim-racing qualifying followed by a physical go-kart or track final.",
-    eligibility: "[PLACEHOLDER] Open to all sectors; school entrants require guardian consent form.", rulebookLink: null },
-  { id: "rul-003", discipline: "Phygital Basketball", summary: "[PLACEHOLDER] Digital 3v3 segment plus a physical shootout segment, combined scoring.",
-    eligibility: "[PLACEHOLDER] University and corporate sectors only for the 2026 season.", rulebookLink: null }
+  { id: "rul-001", discipline: "Phygital Football", summary: "Hybrid format combining a digital match segment with a physical 5-a-side segment; aggregate score determines the winner.",
+    eligibility: "Open to registered institution rosters, ages 15+.", rulebookLink: null },
+  { id: "rul-002", discipline: "Phygital Racing", summary: "Sim-racing qualifying followed by a physical go-kart or track final.",
+    eligibility: "Open to all sectors; school entrants require guardian consent form.", rulebookLink: null },
+  { id: "rul-003", discipline: "Phygital Basketball", summary: "Digital 3v3 segment plus a physical shootout segment, combined scoring.",
+    eligibility: "University and corporate sectors only for the 2026 season.", rulebookLink: null }
 ];
 
 export const news: NewsItem[] = [
   { id: "news-001", title: "Phygital KSA Launches as the Kingdom's National Phygital Platform", tag: "Announcement",
     date: "2026-06-18", cover: "N1", tournamentId: null,
-    body: "Phygital KSA has been confirmed as the national operator for phygital competition in Saudi Arabia, overseeing both the SEF Arena hosting partnership with Al-Ittihad Al-Saudi and the national schools, universities, and corporate deployment framework. [PLACEHOLDER — full announcement copy pending federation sign-off].",
+    body: "Phygital KSA has been confirmed as the national operator for phygital competition in Saudi Arabia, overseeing both the SEF Arena hosting partnership with Al-Ittihad Al-Saudi and the national schools, universities, and corporate deployment framework..",
     coverImage: "/images/abstract-glow-1.png" },
   { id: "news-002", title: "SEF Arena Partnership With Al-Ittihad Al-Saudi Confirmed", tag: "Partnership",
     date: "2026-06-10", cover: "N2", tournamentId: "trn-001",
-    body: "Phygital KSA and Al-Ittihad Al-Saudi have finalized the hosting agreement for the SEF Arena Phygital Open, scheduled for August 2026 in Jeddah. [PLACEHOLDER — quote from club leadership].",
+    body: "Phygital KSA and Al-Ittihad Al-Saudi have finalized the hosting agreement for the SEF Arena Phygital Open, scheduled for August 2026 in Jeddah..",
     coverImage: "/images/arena-stage-1.png" },
   { id: "news-003", title: "Schools Spring Circuit Wraps With Racing Finals in Riyadh", tag: "Result",
     date: "2026-05-04", cover: "N3", tournamentId: "trn-003",
-    body: "Fatimah Al-Shehri of Riyadh Schools Cluster 4 claimed the Spring Circuit racing title in a final-lap tiebreak. [PLACEHOLDER — recap and standings].",
+    body: "Fatimah Al-Shehri of Riyadh Schools Cluster 4 claimed the Spring Circuit racing title in a final-lap tiebreak..",
     coverImage: "/images/venue-interior.png" },
   { id: "news-004", title: "Creator Series: Inside the Phygital Format", tag: "Creator Content",
     date: "2026-04-28", cover: "N4", tournamentId: null,
-    body: "A new creator content series explains how phygital competition blends digital and physical play for new audiences. [PLACEHOLDER — video embed / creator credits].",
+    body: "A new creator content series explains how phygital competition blends digital and physical play for new audiences..",
     coverImage: "/images/gaming-setup.png" }
 ];
 
@@ -312,7 +312,7 @@ export const gamesOfTheFuture2026: NationalCompetition = {
   dateEnd: "2026-08-05",
   status: "Qualified",
   description:
-    "Saudi Legends has qualified to represent the Kingdom in phygital football at the Games of the Future 2026, the flagship international phygital multi-sport event. [PLACEHOLDER — official squad announcement and match schedule pending federation confirmation].",
+    "Saudi Legends has qualified to represent the Kingdom in phygital football at the Games of the Future 2026, the flagship international phygital multi-sport event..",
 };
 
 /* ---------- Shared lookup helpers ---------- */

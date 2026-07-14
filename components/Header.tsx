@@ -3,25 +3,27 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 
 const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/map", label: "Map" },
-  { href: "/about", label: "About" },
-  { href: "/team", label: "Saudi Legends" },
-  { href: "/institutions", label: "Institutions Hub" },
-  { href: "/institutions/directory", label: "Directory" },
-  { href: "/players", label: "Players" },
-  { href: "/calendar", label: "Calendar" },
-  { href: "/results", label: "Hall of Fame" },
-  { href: "/rules", label: "Rules" },
-  { href: "/news", label: "News" },
-  { href: "/partners", label: "Partners" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", key: "home" },
+  { href: "/map", key: "map" },
+  { href: "/about", key: "about" },
+  { href: "/team", key: "team" },
+  { href: "/institutions", key: "institutionsHub" },
+  { href: "/institutions/directory", key: "directory" },
+  { href: "/players", key: "players" },
+  { href: "/calendar", key: "calendar" },
+  { href: "/results", key: "hallOfFame" },
+  { href: "/rules", key: "rules" },
+  { href: "/news", key: "news" },
+  { href: "/partners", key: "partners" },
+  { href: "/contact", key: "contact" },
 ];
 
 export default function Header() {
   const pathname = usePathname();
+  const { locale, toggleLocale, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -56,14 +58,19 @@ export default function Header() {
               href={l.href}
               className={pathname === l.href ? "active" : ""}
             >
-              {l.label}
+              {t(`nav.${l.key}`)}
             </Link>
           ))}
         </nav>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div className="lang-toggle" title="Bilingual toggle — decision pending">
-            EN / AR
-          </div>
+          <button
+            className="lang-toggle"
+            onClick={toggleLocale}
+            style={{ cursor: "pointer", background: "none" }}
+            aria-label="Switch language"
+          >
+            {locale === "en" ? "EN / AR" : "AR / EN"}
+          </button>
           <button
             className={`nav-toggle ${open ? "open" : ""}`}
             aria-label="Toggle menu"

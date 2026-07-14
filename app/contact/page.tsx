@@ -56,7 +56,9 @@ export default function ContactPage() {
             <div>
               <h3>Phygital KSA</h3>
               <p className="desc">Riyadh, Saudi Arabia</p>
-              <p className="desc">info@phygitalksa.example [PLACEHOLDER]</p>
+              <p className="form-note" style={{ marginTop: -8 }}>
+                Direct contact email pending official confirmation — use the form for now.
+              </p>
               <div style={{ marginTop: 20 }}>
                 <a href="#" className="btn btn-outline" style={{ marginRight: 10 }}>Twitter / X</a>
                 <a href="#" className="btn btn-outline">Instagram</a>

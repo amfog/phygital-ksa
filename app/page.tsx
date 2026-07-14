@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import CountUp from "@/components/CountUp";
 import SponsorMarquee from "@/components/SponsorMarquee";
 import HeroCarousel from "@/components/HeroCarousel";
+import { useTranslation } from "@/lib/i18n/LanguageContext";
 import {
   institutions,
   players,
@@ -16,6 +19,8 @@ import {
 } from "@/lib/data";
 
 export default function Home() {
+  const { t } = useTranslation();
+
   const featured =
     tournaments.find((t) => t.status === "Ongoing") ??
     tournaments.find((t) => t.status === "Upcoming");
@@ -30,40 +35,37 @@ export default function Home() {
       <section className="hero">
         <HeroCarousel />
         <div className="container">
-          <span className="section-tag eyebrow">National Operator · Saudi Arabia</span>
+          <span className="section-tag eyebrow">{t("home.eyebrow")}</span>
           <h1>
-            The National Face
+            {t("home.titleLine1")}
             <br />
-            of Phygital in
+            {t("home.titleLine2")}
             <br />
-            Saudi Arabia
+            {t("home.titleLine3")}
           </h1>
           <p style={{ maxWidth: 560, fontSize: "1.05rem", color: "#ddd" }}>
-            Phygital KSA runs phygital competition across the Kingdom — hosting the SEF Arena
-            tournament with Al-Ittihad Al-Saudi, and deploying a standardized framework across
-            schools, universities, and corporates, aligned with Phygital International and the
-            Games of the Future.
+            {t("home.subtitle")}
           </p>
           <div className="hero-actions">
             <Link href="/institutions" className="btn btn-primary">
-              Register Your Institution
+              {t("home.registerCta")}
             </Link>
             <Link href="/calendar" className="btn btn-outline">
-              View National Calendar
+              {t("home.calendarCta")}
             </Link>
           </div>
           <div className="hero-stats">
             <div className="hero-stat">
               <div className="num"><CountUp target={institutions.length} /></div>
-              <div className="lbl">Institutions Registered</div>
+              <div className="lbl">{t("home.statsInstitutions")}</div>
             </div>
             <div className="hero-stat">
               <div className="num"><CountUp target={players.length} /></div>
-              <div className="lbl">Registered Players</div>
+              <div className="lbl">{t("home.statsPlayers")}</div>
             </div>
             <div className="hero-stat">
               <div className="num"><CountUp target={tournaments.length} /></div>
-              <div className="lbl">Sanctioned Tournaments</div>
+              <div className="lbl">{t("home.statsTournaments")}</div>
             </div>
           </div>
         </div>
@@ -73,27 +75,21 @@ export default function Home() {
 
       <section className="section section--light">
         <div className="container">
-          <span className="section-tag">Two Tracks, One System</span>
-          <h2>How Phygital KSA Works</h2>
+          <span className="section-tag">{t("home.tracksTag")}</span>
+          <h2>{t("home.tracksTitle")}</h2>
           <div className="grid grid-2" style={{ marginTop: 32 }}>
             <div className="card">
-              <h3>SEF Arena Hosting</h3>
-              <p className="desc">
-                In partnership with Al-Ittihad Al-Saudi, Phygital KSA hosts the flagship Phygital
-                Tournament at SEF Arena — the Kingdom&apos;s marquee phygital competition event.
-              </p>
+              <h3>{t("home.sefTitle")}</h3>
+              <p className="desc">{t("home.sefBody")}</p>
               <Link href="/tournaments/trn-001" className="btn btn-outline" style={{ alignSelf: "flex-start" }}>
-                View SEF Arena Open
+                {t("home.sefCta")}
               </Link>
             </div>
             <div className="card">
-              <h3>National Deployment Framework</h3>
-              <p className="desc">
-                A standardized onboarding system for schools, universities, and corporates —
-                building a pathway to Phygital International and Games of the Future eligibility.
-              </p>
+              <h3>{t("home.deploymentTitle")}</h3>
+              <p className="desc">{t("home.deploymentBody")}</p>
               <Link href="/institutions" className="btn btn-outline" style={{ alignSelf: "flex-start" }}>
-                Onboard an Institution
+                {t("home.deploymentCta")}
               </Link>
             </div>
           </div>
@@ -102,8 +98,8 @@ export default function Home() {
 
       <section className="section section--white">
         <div className="container">
-          <span className="section-tag">Live Now</span>
-          <h2>Featured Tournament</h2>
+          <span className="section-tag">{t("home.featuredTag")}</span>
+          <h2>{t("home.featuredTitle")}</h2>
           <div style={{ marginTop: 24 }}>
             {featured ? (
               <div className="card" style={{ maxWidth: 560, padding: 0, overflow: "hidden" }}>
@@ -123,12 +119,12 @@ export default function Home() {
                 <p className="meta">{featured.discipline} · {featured.venue}</p>
                 <p className="desc">{featured.description}</p>
                 <Link href={`/tournaments/${featured.id}`} className="btn btn-outline" style={{ alignSelf: "flex-start" }}>
-                  View Details
+                  {t("home.viewDetails")}
                 </Link>
                 </div>
               </div>
             ) : (
-              <p>No live tournament right now — check the calendar.</p>
+              <p>{t("home.noLiveTournament")}</p>
             )}
           </div>
         </div>
@@ -136,8 +132,8 @@ export default function Home() {
 
       <section className="section section--black">
         <div className="container">
-          <span className="section-tag">Hall of Fame</span>
-          <h2>Most Recent Winner</h2>
+          <span className="section-tag">{t("home.hofTag")}</span>
+          <h2>{t("home.hofTitle")}</h2>
           <div style={{ marginTop: 24 }}>
             {latestResult ? (
               <div className="card" style={{ maxWidth: 560, background: "#141414", borderColor: "#2a2a2a" }}>
@@ -149,7 +145,7 @@ export default function Home() {
                   {latestTournament ? latestTournament.name : ""} · {fmtDate(latestResult.date)}
                 </p>
                 <Link href="/results" className="btn btn-outline" style={{ alignSelf: "flex-start" }}>
-                  View Hall of Fame
+                  {t("home.viewHof")}
                 </Link>
               </div>
             ) : null}

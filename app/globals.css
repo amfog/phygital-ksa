@@ -65,6 +65,13 @@ a { color: inherit; text-decoration: none; }
   color: var(--white);
   position: relative;
 }
+.section--black-photo {
+  background-image:
+    linear-gradient(180deg, rgba(10,11,31,.62) 0%, rgba(10,11,31,.9) 75%, var(--black) 100%),
+    var(--hero-image, none);
+  background-size: cover;
+  background-position: center;
+}
 .section--black::before {
   content: "";
   position: absolute; inset: 0;
@@ -125,9 +132,10 @@ a { color: inherit; text-decoration: none; }
 .lang-toggle {
   border: 1px solid #35385c; color: #9698b8; font-size: .7rem;
   padding: 4px 10px; border-radius: 3px; text-transform: uppercase;
-  letter-spacing: .08em; cursor: not-allowed;
-  white-space: nowrap; flex-shrink: 0;
+  letter-spacing: .08em; cursor: pointer; transition: border-color .15s ease, color .15s ease;
+  white-space: nowrap; flex-shrink: 0; font-family: var(--font-head);
 }
+.lang-toggle:hover { border-color: var(--accent-blue); color: var(--white); }
 
 @media (max-width: 1620px) {
   .nav-links { display: none; }
@@ -510,4 +518,48 @@ body { animation: pageFade .4s ease; }
   .container { padding: 0 16px; }
   h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
   .card-photo, .card-logo { aspect-ratio: 16/10; }
+}
+
+/* ===========================================================
+   RTL (ARABIC) SUPPORT
+   Foundation layer — applies globally via [dir="rtl"] on <html>,
+   set by LanguageContext.tsx when the person toggles to Arabic.
+
+   Most layout already mirrors for free: flexbox row-direction items
+   (nav, button groups, filter bars, grids) reverse automatically
+   under dir="rtl" per the CSS spec — no extra rules needed for those.
+   What's handled explicitly below: font swap (the whole site's type
+   scale references var(--font-head)/var(--font-body), so overriding
+   those two variables re-points every heading/body element at once),
+   and the handful of hardcoded physical text-align values that don't
+   auto-flip with dir.
+
+   Known gap, not yet handled here: a few purely decorative absolute-
+   positioned accent shapes (.hero::after, .profile-head::before glow
+   blobs) stay pinned to their LTR corner instead of mirroring. Low
+   priority — cosmetic only, not a layout or readability bug.
+=========================================================== */
+[dir="rtl"] {
+  --font-head: "Cairo", "Arial", sans-serif;
+  --font-body: "Cairo", "Arial", sans-serif;
+}
+
+/* Arabic headings read better with tighter letter-spacing and no
+   forced uppercase — Cairo doesn't have a true uppercase form. */
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4,
+[dir="rtl"] .section-tag, [dir="rtl"] .badge, [dir="rtl"] .btn,
+[dir="rtl"] .nav-links a, [dir="rtl"] .tab-btn {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+[dir="rtl"] table.leaderboard th, [dir="rtl"] table.leaderboard td { text-align: right; }
+
+/* Dates, scores, and numeric stats stay LTR even inside an RTL page —
+   mixed Arabic/Latin-numeral content reads wrong if these mirror. */
+[dir="rtl"] .stat-strip .n,
+[dir="rtl"] .hero-stat .num,
+[dir="rtl"] .meta {
+  direction: ltr;
+  unicode-bidi: isolate;
 }
