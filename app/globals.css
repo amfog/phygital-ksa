@@ -563,3 +563,71 @@ body { animation: pageFade .4s ease; }
   direction: ltr;
   unicode-bidi: isolate;
 }
+
+/* ===========================================================
+   PHYGITAL EXPLAINER: Digital Round -> Transition -> Physical Round
+   New section on the About page, explaining the format itself
+   (not just the org mandate) — see "What Is Phygital?" section.
+=========================================================== */
+.phase-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+@media (max-width: 900px) { .phase-strip { grid-template-columns: 1fr; } }
+.phase-card {
+  background: var(--white); border: 1px solid var(--gray-line);
+  padding: 28px; text-align: center;
+  box-shadow: 0 1px 2px rgba(10,11,31,.04), 0 4px 12px rgba(10,11,31,.05);
+}
+.phase-icon {
+  width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(78,107,255,.1); font-size: 26px; overflow: hidden;
+}
+.phase-card h3 { font-size: 1rem; }
+.phase-card p { font-size: .88rem; color: #444; margin: 0; }
+
+/* ===========================================================
+   MORPH CARD: physical photo <-> "digitized" version, looping.
+   Used on the About page's "Three Phygital Sports" cards — the same
+   photo cross-fades into a color-shifted/scanline "digital" state and
+   back, on a loop, to visually suggest the phygital transformation.
+   Pure CSS, no second image asset needed per sport.
+=========================================================== */
+.morph-card { display: flex; flex-direction: column; gap: 10px; }
+.morph-card-photo {
+  position: relative; width: 100%; aspect-ratio: 4/5; overflow: hidden;
+  background: var(--black); border: 1px solid var(--gray-line);
+}
+.morph-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(78,107,255,.35), rgba(155,77,255,.45));
+  mix-blend-mode: color;
+  opacity: 0;
+  animation: morphPulse 6s ease-in-out infinite;
+  pointer-events: none;
+}
+.morph-card-scanlines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg, rgba(78,107,255,.25) 0px, rgba(78,107,255,.25) 1px,
+    transparent 1px, transparent 4px
+  );
+  opacity: 0;
+  animation: morphScanlines 6s ease-in-out infinite;
+}
+@keyframes morphPulse {
+  0%, 35% { opacity: 0; }
+  50%, 70% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+@keyframes morphScanlines {
+  0%, 35% { opacity: 0; }
+  50%, 70% { opacity: .6; }
+  85%, 100% { opacity: 0; }
+}
+.morph-card-label {
+  font-family: var(--font-head); text-transform: uppercase; letter-spacing: .04em;
+  font-size: .95rem; color: var(--black); text-align: center;
+}
+[dir="rtl"] .morph-card-label { text-transform: none; letter-spacing: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .morph-card-overlay, .morph-card-scanlines { animation: none; opacity: 0; }
+}
