@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import SaudiMap from "@/components/SaudiMap";
-import { regions } from "@/lib/data";
+import { getPhygitalData } from "@/services/phygital";
 
 export const metadata: Metadata = { title: "National Circuit Map — Phygital KSA" };
 
-export default function MapPage() {
+export default async function MapPage() {
+  const { regions, institutions, players } = await getPhygitalData();
   const activeCount = regions.filter((r) => r.status === "Active").length;
   const onboardingCount = regions.filter((r) => r.status === "Onboarding").length;
 
@@ -24,7 +25,7 @@ export default function MapPage() {
 
       <section className="section section--light">
         <div className="container">
-          <SaudiMap />
+          <SaudiMap regions={regions} institutions={institutions} players={players} />
         </div>
       </section>
     </>

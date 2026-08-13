@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { partners } from "@/lib/data";
+import { getPhygitalData } from "@/services/phygital";
 
 export const metadata: Metadata = { title: "Partners — Phygital KSA" };
 
-export default function PartnersPage() {
+export default async function PartnersPage() {
+  const { partners } = await getPhygitalData();
   return (
     <>
       <section className="section section--black" style={{ paddingTop: 56, paddingBottom: 36 }}>
@@ -20,7 +21,17 @@ export default function PartnersPage() {
           <div className="grid grid-4">
             {partners.map((p) => (
               <a key={p.id} href={p.link} className="card" style={{ textAlign: "center", alignItems: "center" }}>
-                <div className="card-logo" style={{ width: "100%" }}>{p.logo}</div>
+                <div
+                  className="card-logo"
+                  style={{
+                    width: "100%",
+                    ...(p.logoUrl
+                      ? { backgroundImage: `url(${p.logoUrl})`, backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center" }
+                      : {}),
+                  }}
+                >
+                  {!p.logoUrl && p.logo}
+                </div>
                 <h3 style={{ fontSize: "1rem" }}>{p.name}</h3>
                 <p className="meta">{p.tier}</p>
               </a>

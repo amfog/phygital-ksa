@@ -12,8 +12,13 @@ export interface Institution {
   name: string;
   sector: Sector;
   city: string;
+  /** Slug matching RegionInfo.id — drives the national map's region grouping. */
+  regionId?: string;
   status: "Active" | "Pending";
   logo: string;
+  /** Real logo URL from Vicious OS, once uploaded. Falls back to the `logo`
+   *  initials block when absent. */
+  logoUrl?: string;
   description: string;
   contact: { name: string; email: string; phone: string };
 }
@@ -25,6 +30,9 @@ export interface Player {
   sector: Sector;
   discipline: string;
   photo: string;
+  /** Real photo URL from Vicious OS, once uploaded. Falls back to the
+   *  `photo` initials block when absent. */
+  photoUrl?: string;
   stats: { matches: number; wins: number; placements: string };
   achievements: string[];
   social: Record<string, string>;
@@ -86,6 +94,8 @@ export interface Partner {
   name: string;
   tier: "Federation" | "International Body" | "Sponsor";
   logo: string;
+  /** Real logo URL from Vicious OS, once uploaded. */
+  logoUrl?: string;
   link: string;
 }
 
@@ -128,22 +138,22 @@ export const siteImagery = {
 };
 
 export const institutions: Institution[] = [
-  { id: "inst-001", name: "King Saud University", sector: "University", city: "Riyadh", status: "Active",
+  { id: "inst-001", name: "King Saud University", sector: "University", city: "Riyadh", regionId: "riyadh", status: "Active",
     logo: "KSU", description: "Founding university partner for the national phygital deployment framework.",
     contact: { name: "Faisal Al-Otaibi", email: "faisal.otaibi@ksu.edu.sa", phone: "+966 50 000 0001" } },
-  { id: "inst-002", name: "Al-Ittihad Al-Saudi Academy", sector: "Corporate", city: "Jeddah", status: "Active",
+  { id: "inst-002", name: "Al-Ittihad Al-Saudi Academy", sector: "Corporate", city: "Jeddah", regionId: "makkah", status: "Active",
     logo: "ITHD", description: "Club academy hosting the SEF Arena phygital tournament track.",
     contact: { name: "Sara Al-Ghamdi", email: "sara.ghamdi@ittihad.sa", phone: "+966 50 000 0002" } },
-  { id: "inst-003", name: "Riyadh Schools Cluster 4", sector: "School", city: "Riyadh", status: "Active",
+  { id: "inst-003", name: "Riyadh Schools Cluster 4", sector: "School", city: "Riyadh", regionId: "riyadh", status: "Active",
     logo: "RSC4", description: "Public school cluster onboarded through the national schools track.",
     contact: { name: "Mona Al-Zahrani", email: "mona.zahrani@rsc4.edu.sa", phone: "+966 50 000 0003" } },
-  { id: "inst-004", name: "NEOM Sports Corporate League", sector: "Corporate", city: "NEOM", status: "Pending",
+  { id: "inst-004", name: "NEOM Sports Corporate League", sector: "Corporate", city: "NEOM", regionId: "tabuk", status: "Pending",
     logo: "NEOM", description: "Corporate wellness league evaluating phygital format for FY27 rollout.",
     contact: { name: "Yousef Al-Harbi", email: "yousef.harbi@neom.sa", phone: "+966 50 000 0004" } },
-  { id: "inst-005", name: "Dammam International School", sector: "School", city: "Dammam", status: "Active",
+  { id: "inst-005", name: "Dammam International School", sector: "School", city: "Dammam", regionId: "eastern-region", status: "Active",
     logo: "DIS", description: "Eastern Province school pilot for the phygital PE curriculum.",
     contact: { name: "Layla Al-Muraikhi", email: "layla.m@dis.edu.sa", phone: "+966 50 000 0005" } },
-  { id: "inst-006", name: "Prince Sultan University", sector: "University", city: "Riyadh", status: "Active",
+  { id: "inst-006", name: "Prince Sultan University", sector: "University", city: "Riyadh", regionId: "riyadh", status: "Active",
     logo: "PSU", description: "University esports program integrating phygital formats into varsity play.",
     contact: { name: "Omar Al-Dosari", email: "omar.dosari@psu.edu.sa", phone: "+966 50 000 0006" } }
 ];
@@ -238,39 +248,59 @@ export const partners: Partner[] = [
 
 /* ---------- National map: region metadata ---------- */
 export interface RegionInfo {
+  /** Slug — matches Vicious OS's `regions.id` (e.g. "riyadh", "eastern-region"). */
+  id: string;
   name: string;
   nameAr: string;
+  /** Legacy city-matching, kept for reference; institutionsInRegion now
+   *  matches on Institution.regionId instead. */
   cities: string[];
   capital: string;
   status: "Active" | "Onboarding" | "Not Yet Deployed";
 }
 
 export const regions: RegionInfo[] = [
-  { name: "Riyadh", nameAr: "الرياض", cities: ["Riyadh"], capital: "Riyadh", status: "Active" },
-  { name: "Makkah", nameAr: "مكة المكرمة", cities: ["Jeddah", "Makkah"], capital: "Jeddah", status: "Active" },
-  { name: "Eastern Region", nameAr: "المنطقة الشرقية", cities: ["Dammam"], capital: "Dammam", status: "Active" },
-  { name: "Tabuk", nameAr: "تبوك", cities: ["NEOM"], capital: "Tabuk", status: "Onboarding" },
-  { name: "Madinah", nameAr: "المدينة المنورة", cities: [], capital: "Madinah", status: "Not Yet Deployed" },
-  { name: "Qassim", nameAr: "القصيم", cities: [], capital: "Buraidah", status: "Not Yet Deployed" },
-  { name: "Asir", nameAr: "عسير", cities: [], capital: "Abha", status: "Not Yet Deployed" },
-  { name: "Hail", nameAr: "حائل", cities: [], capital: "Hail", status: "Not Yet Deployed" },
-  { name: "Jizan", nameAr: "جازان", cities: [], capital: "Jizan", status: "Not Yet Deployed" },
-  { name: "Najran", nameAr: "نجران", cities: [], capital: "Najran", status: "Not Yet Deployed" },
-  { name: "Bahah", nameAr: "الباحة", cities: [], capital: "Al Bahah", status: "Not Yet Deployed" },
-  { name: "Jawf", nameAr: "الجوف", cities: [], capital: "Sakakah", status: "Not Yet Deployed" },
-  { name: "Northern Region", nameAr: "الحدود الشمالية", cities: [], capital: "Arar", status: "Not Yet Deployed" },
+  { id: "riyadh", name: "Riyadh", nameAr: "الرياض", cities: ["Riyadh"], capital: "Riyadh", status: "Active" },
+  { id: "makkah", name: "Makkah", nameAr: "مكة المكرمة", cities: ["Jeddah", "Makkah"], capital: "Jeddah", status: "Active" },
+  { id: "eastern-region", name: "Eastern Region", nameAr: "المنطقة الشرقية", cities: ["Dammam"], capital: "Dammam", status: "Active" },
+  { id: "tabuk", name: "Tabuk", nameAr: "تبوك", cities: ["NEOM"], capital: "Tabuk", status: "Onboarding" },
+  { id: "madinah", name: "Madinah", nameAr: "المدينة المنورة", cities: [], capital: "Madinah", status: "Not Yet Deployed" },
+  { id: "qassim", name: "Qassim", nameAr: "القصيم", cities: [], capital: "Buraidah", status: "Not Yet Deployed" },
+  { id: "asir", name: "Asir", nameAr: "عسير", cities: [], capital: "Abha", status: "Not Yet Deployed" },
+  { id: "hail", name: "Hail", nameAr: "حائل", cities: [], capital: "Hail", status: "Not Yet Deployed" },
+  { id: "jizan", name: "Jizan", nameAr: "جازان", cities: [], capital: "Jizan", status: "Not Yet Deployed" },
+  { id: "najran", name: "Najran", nameAr: "نجران", cities: [], capital: "Najran", status: "Not Yet Deployed" },
+  { id: "bahah", name: "Bahah", nameAr: "الباحة", cities: [], capital: "Al Bahah", status: "Not Yet Deployed" },
+  { id: "jawf", name: "Jawf", nameAr: "الجوف", cities: [], capital: "Sakakah", status: "Not Yet Deployed" },
+  { id: "northern-region", name: "Northern Region", nameAr: "الحدود الشمالية", cities: [], capital: "Arar", status: "Not Yet Deployed" },
 ];
 
-export const institutionsInRegion = (regionName: string) => {
-  const region = regions.find((r) => r.name === regionName);
+/** Pure — takes arrays as params so both mock and live data can reuse it. */
+export const institutionsInRegionOf = (
+  regionName: string,
+  regionList: RegionInfo[],
+  institutionList: Institution[]
+) => {
+  const region = regionList.find((r) => r.name === regionName);
   if (!region) return [];
-  return institutions.filter((i) => region.cities.includes(i.city));
+  return institutionList.filter((i) => i.regionId === region.id);
 };
 
-export const playersInRegion = (regionName: string) => {
-  const insts = institutionsInRegion(regionName).map((i) => i.id);
-  return players.filter((p) => insts.includes(p.institutionId));
+export const playersInRegionOf = (
+  regionName: string,
+  regionList: RegionInfo[],
+  institutionList: Institution[],
+  playerList: Player[]
+) => {
+  const instIds = institutionsInRegionOf(regionName, regionList, institutionList).map((i) => i.id);
+  return playerList.filter((p) => instIds.includes(p.institutionId));
 };
+
+export const institutionsInRegion = (regionName: string) =>
+  institutionsInRegionOf(regionName, regions, institutions);
+
+export const playersInRegion = (regionName: string) =>
+  playersInRegionOf(regionName, regions, institutions, players);
 
 /* ---------- Saudi Legends: national phygital team ---------- */
 export interface NationalTeamPlayer {

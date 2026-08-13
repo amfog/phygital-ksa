@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPlayer, getInstitution, players } from "@/lib/data";
+import { getPhygitalData } from "@/services/phygital";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const { players } = await getPhygitalData();
   return players.map((p) => ({ id: p.id }));
 }
 
@@ -12,16 +13,22 @@ export default async function PlayerProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const p = getPlayer(id);
+  const { players, institutions } = await getPhygitalData();
+  const p = players.find((pl) => pl.id === id);
   if (!p) notFound();
 
-  const inst = getInstitution(p.institutionId);
+  const inst = institutions.find((i) => i.id === p.institutionId) ?? null;
 
   return (
     <>
       <section className="profile-head">
         <div className="container" style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
-          <div className="profile-photo">{p.photo}</div>
+          <div
+            className="profile-photo"
+            style={p.photoUrl ? { backgroundImage: `url(${p.photoUrl})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
+          >
+            {!p.photoUrl && p.photo}
+          </div>
           <div>
             <span className="badge badge-lime">{p.sector}</span>
             <h1 style={{ marginTop: 8, fontSize: "clamp(1.8rem,4vw,2.6rem)" }}>{p.name}</h1>
@@ -80,7 +87,12 @@ export default async function PlayerProfilePage({
           <h2>Represents</h2>
           {inst ? (
             <Link href={`/institutions/directory/${inst.id}`} className="card" style={{ maxWidth: 420 }}>
-              <div className="card-logo">{inst.logo}</div>
+              <div
+                className="card-logo"
+                style={inst.logoUrl ? { backgroundImage: `url(${inst.logoUrl})`, backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center" } : undefined}
+              >
+                {!inst.logoUrl && inst.logo}
+              </div>
               <h3>{inst.name}</h3>
               <p className="meta">{inst.sector} · {inst.city}</p>
             </Link>

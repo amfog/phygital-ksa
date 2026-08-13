@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { MAP_VIEWBOX, REGION_SHAPES } from "@/lib/region-shapes";
-import { regions, institutionsInRegion, playersInRegion } from "@/lib/data";
+import { institutionsInRegionOf, playersInRegionOf } from "@/lib/data";
+import type { Institution, Player, RegionInfo } from "@/lib/data";
 
 const STATUS_FILL: Record<string, string> = {
   Active: "url(#regionGradient)",
@@ -11,13 +12,21 @@ const STATUS_FILL: Record<string, string> = {
   "Not Yet Deployed": "#2a2d4a",
 };
 
-export default function SaudiMap() {
+export default function SaudiMap({
+  regions,
+  institutions,
+  players,
+}: {
+  regions: RegionInfo[];
+  institutions: Institution[];
+  players: Player[];
+}) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
 
   const selectedRegion = regions.find((r) => r.name === selected);
-  const selectedInstitutions = selected ? institutionsInRegion(selected) : [];
-  const selectedPlayers = selected ? playersInRegion(selected) : [];
+  const selectedInstitutions = selected ? institutionsInRegionOf(selected, regions, institutions) : [];
+  const selectedPlayers = selected ? playersInRegionOf(selected, regions, institutions, players) : [];
 
   return (
     <div style={{ position: "relative" }}>

@@ -1,15 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  getInstitution,
-  playersOf,
-  tournamentsOf,
-  statusBadgeClass,
-  fmtDate,
-  institutions,
-} from "@/lib/data";
+import { tournamentsOf, statusBadgeClass, fmtDate } from "@/lib/data";
+import { getPhygitalData } from "@/services/phygital";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const { institutions } = await getPhygitalData();
   return institutions.map((i) => ({ id: i.id }));
 }
 
@@ -19,17 +14,23 @@ export default async function InstitutionProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const inst = getInstitution(id);
+  const { institutions, players } = await getPhygitalData();
+  const inst = institutions.find((i) => i.id === id);
   if (!inst) notFound();
 
-  const roster = playersOf(inst.id);
+  const roster = players.filter((p) => p.institutionId === inst.id);
   const trns = tournamentsOf(inst.id);
 
   return (
     <>
       <section className="profile-head">
         <div className="container" style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
-          <div className="profile-photo">{inst.logo}</div>
+          <div
+            className="profile-photo"
+            style={inst.logoUrl ? { backgroundImage: `url(${inst.logoUrl})`, backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center" } : undefined}
+          >
+            {!inst.logoUrl && inst.logo}
+          </div>
           <div>
             <span className={`badge ${inst.status === "Active" ? "badge-lime" : "badge-completed"}`}>
               {inst.status}
@@ -49,7 +50,12 @@ export default async function InstitutionProfilePage({
             {roster.length ? (
               roster.map((p) => (
                 <Link key={p.id} href={`/players/${p.id}`} className="card">
-                  <div className="card-photo">{p.photo}</div>
+                  <div
+                    className="card-photo"
+                    style={p.photoUrl ? { backgroundImage: `url(${p.photoUrl})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
+                  >
+                    {!p.photoUrl && p.photo}
+                  </div>
                   <h3>{p.name}</h3>
                   <p className="meta">{p.discipline}</p>
                 </Link>
